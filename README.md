@@ -30,7 +30,7 @@ Clone the repository:
 ```bash
 git clone https://github.com/MrFawsDK/monkeyhack
 cd monkeyhack
-
+```
 
 ## Credits
 
