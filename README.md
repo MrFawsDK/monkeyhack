@@ -27,9 +27,21 @@ A small Python and Selenium project that reads the active words on a typing test
 
 Clone the repository:
 
-```bash
-git clone https://github.com/MrFawsDK/monkeyhack
+```powershell
+git clone https://github.com/MrFawsDK/monkeyhack.git
 cd monkeyhack
+```
+
+Install the dependencies:
+
+```powershell
+py -m pip install -r requirements.txt
+```
+
+Run the program:
+
+```powershell
+py main.py
 ```
 
 ## Credits
