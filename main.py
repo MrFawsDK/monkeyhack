@@ -28,7 +28,7 @@ def get_delay_range() -> tuple[float, float]:
     ]
 
     if not values:
-        raise ValueError("delayrange.txt indeholder ingen forsinkelse.")
+        raise ValueError("delayrange.txt doesn't have any delay.")
 
     try:
         start_text, end_text = values[0].split(",", maxsplit=1)
@@ -36,11 +36,11 @@ def get_delay_range() -> tuple[float, float]:
         end = float(end_text.strip())
     except ValueError as exc:
         raise ValueError(
-            "Brug formatet 0.06,0.10 i delayrange.txt"
+            "Use format 0.06,0.10 in delayrange.txt"
         ) from exc
 
     if start < 0 or end < start:
-        raise ValueError("Forsinkelsesintervallet er ugyldigt.")
+        raise ValueError("deley isn't valid.")
 
     return start, end
 
@@ -101,13 +101,13 @@ def wait_for_next_word(
 def type_test(driver: webdriver.Chrome, mode: str) -> None:
     start_delay, end_delay = get_delay_range()
 
-    print("Klik på lokalhost-testen. Starter om 3 sekunder...")
+    print("click in Monkeytype. starts in 3 seconds...")
     sleep(3)
 
     first_word = get_active_word(driver)
 
     if not first_word:
-        print("Ingen aktiv test fundet. Start testen i Chrome først.")
+        print("No active test. Start the test in chrome first.")
         return
 
     written_words = 0
@@ -135,14 +135,12 @@ def type_test(driver: webdriver.Chrome, mode: str) -> None:
             elif mode == "static":
                 sleep(start_delay)
             else:
-                # En meget lille pause forhindrer Chrome i at tabe tegn.
                 sleep(0.005)
 
         send_space(driver)
         written_words += 1
 
-        # Vent på, at Monkeytype rent faktisk har godkendt mellemrummet
-        # og flyttet markøren til næste ord.
+
         if not wait_for_next_word(driver, active_element):
             sleep(0.05)
 
@@ -168,13 +166,13 @@ def show_visible_words(driver: webdriver.Chrome) -> None:
 
 def main() -> None:
     print("MONKEYHACK")
-    print("Åbner Google Chrome...")
+    print("Opens Google Chrome...")
 
     driver = webdriver.Chrome()
 
     try:
         driver.get("https://monkeytype.com/login")
-        input("Log ind, og tryk Enter her, når du er klar...")
+        input("Login, and press enter here, when you are ready...")
 
         driver.get("https://monkeytype.com")
 
@@ -185,14 +183,14 @@ def main() -> None:
         while True:
             print(
                 "\nMONKEYHACK"
-                "\n[1] Vis fundne ord"
-                "\n[2] Skriv med tilfældig forsinkelse"
-                "\n[3] Skriv med fast forsinkelse"
-                "\n[4] Skriv hurtigt"
-                "\n[9] Afslut"
+                "\n[1] Show found words"
+                "\n[2] Write with random delay"
+                "\n[3] Write with delay from delayrange.txt"
+                "\n[4] Write Fast"
+                "\n[9] Quit"
             )
 
-            choice = input("\nVælg en funktion: ").strip()
+            choice = input("\nChoose an function: ").strip()
 
             try:
                 if choice == "1":
@@ -206,22 +204,22 @@ def main() -> None:
                 elif choice == "9":
                     break
                 else:
-                    print("Ugyldigt valg.")
+                    print("Invalid choice.")
 
             except ValueError as exc:
-                print(f"Fejl: {exc}")
+                print(f"Error: {exc}")
 
             except WebDriverException as exc:
-                print(f"Chrome-fejl: {exc.msg}")
+                print(f"Chrome-Error: {exc.msg}")
                 break
 
     finally:
         driver.quit()
-        print("Chrome er lukket.")
+        print("Chrome is closed.")
 
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\nProgrammet blev afbrudt.")
+        print("\nExited")
