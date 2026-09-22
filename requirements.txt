@@ -2,4 +2,3 @@ selenium
 icecream
 termcolor
 keyboard
-random
